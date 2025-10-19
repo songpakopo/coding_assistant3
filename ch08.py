@@ -91,3 +91,6 @@ def getStocks():
 if __name__ == "__main__":
     r = getStocks()
     print(r)
+
+
+python app.py
