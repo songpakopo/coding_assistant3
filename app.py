@@ -1,12 +1,13 @@
-
 from flask import Flask, render_template, request, redirect, url_for
 import openpyxl
 import os
+import math
 
 app = Flask(__name__)
 
 # Excel file path
 EXCEL_FILE = 'stock.xlsx'
+PER_PAGE = 5
 
 def init_excel():
     """Create the Excel file with headers if it doesn't exist."""
@@ -22,10 +23,11 @@ def init_excel():
 
 @app.route('/')
 def index():
-    """Display all records from the Excel file."""
+    """Display records from the Excel file with pagination, sorting, and searching."""
     init_excel()
     workbook = openpyxl.load_workbook(EXCEL_FILE)
     sheet = workbook.active
+    
     data = []
     # Read data starting from the second row
     for row_idx, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
@@ -38,7 +40,34 @@ def index():
                 'volume': row[4],
                 'prediction': row[5]
             })
-    return render_template('index.html', data=data)
+
+    # Search
+    search_query = request.args.get('search', '')
+    if search_query:
+        data = [item for item in data if search_query.lower() in str(item['name']).lower() or search_query.lower() in str(item['code']).lower()]
+
+    # Sorting
+    sort_by = request.args.get('sort_by', 'name')
+    sort_order = request.args.get('sort_order', 'asc')
+    
+    if sort_by and sort_by in data[0]:
+        data.sort(key=lambda x: x[sort_by], reverse=sort_order == 'desc')
+
+    # Pagination
+    page = request.args.get('page', 1, type=int)
+    total_items = len(data)
+    total_pages = math.ceil(total_items / PER_PAGE)
+    start = (page - 1) * PER_PAGE
+    end = start + PER_PAGE
+    paginated_data = data[start:end]
+
+    return render_template('index.html', 
+                           data=paginated_data,
+                           page=page,
+                           total_pages=total_pages,
+                           sort_by=sort_by,
+                           sort_order=sort_order,
+                           search_query=search_query)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
