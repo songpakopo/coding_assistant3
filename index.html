@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주식 관리 웹 애플리케이션</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 2em; }
+        h1 { color: #333; }
+        pre { background-color: #f4f4f4; padding: 1em; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>주식 관리 웹 애플리케이션</h1>
+    <p>Flask와 Excel을 사용하여 주식 정보를 관리하는 간단한 웹 애플리케이션입니다.</p>
+
+    <h2>주요 기능</h2>
+    <ul>
+        <li>주식 목록 보기 (페이지네이션 포함)</li>
+        <li>주식 정보 추가, 수정, 삭제</li>
+        <li>주식 검색 및 정렬</li>
+    </ul>
+
+    <h2>사용 기술</h2>
+    <ul>
+        <li><strong>백엔드:</strong> Python, Flask</li>
+        <li><strong>데이터 저장소:</strong> Excel (<code>.xlsx</code>)</li>
+        <li><strong>프론트엔드:</strong> HTML, Bootstrap</li>
+    </ul>
+
+    <h2>실행 방법</h2>
+    <ol>
+        <li>필요한 라이브러리를 설치합니다:
+            <pre><code>pip install Flask openpyxl</code></pre>
+        </li>
+        <li>애플리케이션을 실행합니다:
+            <pre><code>python app.py</code></pre>
+        </li>
+        <li>웹 브라우저에서 <code>http://127.0.0.1:5000</code> 주소로 접속합니다.</li>
+    </ol>
+</body>
+</html>
